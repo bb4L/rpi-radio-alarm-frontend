@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Home
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-card class="welcome-card">
+      <ion-card-header>
+        <ion-card-subtitle>Raspberry Pi Radio Alarm</ion-card-subtitle>
+        <ion-card-title>Welcome to the Frontend</ion-card-title>
+      </ion-card-header>
+      <ion-card-content *ngIf="host">
+        <p>The actual Host is {{host.valueOf()}}</p>
+      </ion-card-content>
+      <ion-card-content *ngIf="!host">
+        <p>There is no Host set.</p>
+      </ion-card-content>
+    </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Set the host to:</ion-card-title>
+    </ion-card-header>
+    <ion-input placeholder="insert the host of the rpi-alarm-clock" [(ngModel)]="hostinput"></ion-input>
+    <ion-button float-right (click)="setHost()">Set Host</ion-button>
+    <ion-button float-left color="danger" (click)="deleteStorage()">Delete Storage</ion-button>
+
+  </ion-card>
+
+</ion-content>

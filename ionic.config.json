@@ -1,0 +1,7 @@
+{
+  "name": "rpi-radio-alarm-frontent",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}
