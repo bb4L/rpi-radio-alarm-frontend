@@ -1,7 +1,6 @@
 # RPi Radio Alarm Frontend
 
-This is a Frontend to be used with the [rpi-radio-alarm](https://github.com/bb4L/rpi-radio-alarm).
-It is done with [Ionic](https://ionicframework.com/).
+This is a [Ionic](https://ionicframework.com/) Frontend for the [rpi-radio-alarm](https://github.com/bb4L/rpi-radio-alarm).
 
 ## Prerequisites
 Install Ionic
