@@ -12,6 +12,10 @@ export interface Alarm {
     hour: number;
 }
 
+export interface Radio {
+    isPlaying: boolean;
+}
+
 @Injectable({
     providedIn: 'root'
 })
@@ -55,15 +59,30 @@ export class RpiService {
         await this.beforeApiCall();
         const url = this.url + 'alarm/' + i;
         if (turnOff) {
-            return this.http.put(url, {'on': 'false'});
+            return this.http.put(url, {'on': false});
         } else {
-            return this.http.put(url, {'on': 'true'});
+            return this.http.put(url, {'on': true});
         }
     }
 
     async deleteAlarm(index: number) {
         await this.beforeApiCall();
         return this.http.delete(this.url + 'alarm/' + index);
+    }
+
+    async getRadio() {
+        await this.beforeApiCall();
+        return this.http.get(this.url + 'radio');
+    }
+
+    async startRadio() {
+        await this.beforeApiCall();
+        return this.http.post(this.url + 'radio', {'switch': 'on'});
+    }
+
+    async stopRadio() {
+        await this.beforeApiCall();
+        return this.http.post(this.url + 'radio', {'switch': 'off'});
     }
 
     async createAlarm(alarm: any) {

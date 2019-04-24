@@ -15,6 +15,11 @@ export class AppComponent {
       url: '/home',
       icon: 'home'
     },
+      {
+          title: 'Radio',
+          url: '/radio',
+          icon: 'radio'
+      },
     {
       title: 'Alarms',
       url: '/alarms',
