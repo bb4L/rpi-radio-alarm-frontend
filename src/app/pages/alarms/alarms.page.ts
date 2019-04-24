@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Alarm, RpiService} from '../../services/rpi.service';
 import {HttpErrorResponse} from '@angular/common/http';
-import {LoadingController} from '@ionic/angular';
+import {AlertController, LoadingController} from '@ionic/angular';
 
 @Component({
     selector: 'app-alarms',
@@ -12,7 +12,7 @@ export class AlarmsPage implements OnInit {
     alarms: Alarm[] | undefined;
     error: string | undefined;
 
-    constructor(private rpiService: RpiService, private loadingController: LoadingController) {
+    constructor(private rpiService: RpiService, private loadingController: LoadingController, private alertController: AlertController) {
     }
 
     ngOnInit() {
@@ -32,23 +32,20 @@ export class AlarmsPage implements OnInit {
             });
     }
 
-    changeAlarm(i: number) {
-        (async () => {
+    async changeAlarm(event: any, i: number) {
             if (this.alarms) {
                 if (this.alarms[i]) {
-                    this.presentLoading('Sending Change');
-                    (await this.rpiService.switchAlarm(i, !this.alarms[i].on))
-                        .subscribe((res) => {
-                            this.alarms = res as Array<Alarm>;
-                            this.loadingController.dismiss();
+                    const turnOn = this.alarms[i]['on'].valueOf();
 
+                    await this.presentLoading('Setting on =' + turnOn);
+                    (await this.rpiService.switchAlarm(i, !turnOn))
+                        .subscribe((res) => {
+                            this.loadingController.dismiss();
                         }, (err: HttpErrorResponse) => {
                             this.error = err.message;
                         });
                 }
             }
-        })();
-
     }
 
     async presentLoading(message: string) {
@@ -65,5 +62,32 @@ export class AlarmsPage implements OnInit {
             await this.getAlarms();
         })();
 
+    }
+
+    async showDelete(index: number) {
+        await this.presentAlert({
+            header: 'Delete',
+            subHeader: 'Alarm with index ' + index,
+            message: 'Do you Really want to Delete this Alarm?',
+            buttons: [{
+                text: 'Cancel',
+                role: 'cancel',
+                cssClass: 'secondary'
+            }, {
+                text: 'Delete',
+                cssClass: 'danger',
+                handler: async () => {
+                    (await this.rpiService.deleteAlarm(index)).subscribe(resp => {
+                        this.alarms = resp as Alarm[];
+                    });
+                }
+            }]
+        });
+
+    }
+
+    async presentAlert(message: object) {
+        const alert = await this.alertController.create(message);
+        await alert.present();
     }
 }

@@ -23,7 +23,6 @@ export class RpiService {
     constructor(private http: HttpClient, private storage: Storage, private router: Router) {
     }
 
-
     handleStorageValue(value: any) {
         if (value == null) {
             this.router.navigateByUrl('/');
@@ -49,16 +48,28 @@ export class RpiService {
 
     async getAlarms() {
         await this.beforeApiCall();
-        return this.http.get<Alarm[]>(this.url + 'alarm/status');
+        return this.http.get<Alarm[]>(this.url + 'alarm');
     }
 
-    async switchAlarm(i: number, changeToOn: boolean) {
+    async switchAlarm(i: number, turnOff: boolean) {
         await this.beforeApiCall();
-        if (changeToOn) {
-            return this.http.post(this.url + 'alarm/turnon', {'Alarm': i});
+        const url = this.url + 'alarm/' + i;
+        if (turnOff) {
+            return this.http.put(url, {'on': 'false'});
         } else {
-            return this.http.post(this.url + 'alarm/turnoff', {'Alarm': i});
+            return this.http.put(url, {'on': 'true'});
         }
+    }
+
+    async deleteAlarm(index: number) {
+        await this.beforeApiCall();
+        return this.http.delete(this.url + 'alarm/' + index);
+    }
+
+    async createAlarm(alarm: any) {
+        await this.beforeApiCall();
+        const url = this.url + 'alarm/';
+        return this.http.post(url, alarm);
     }
 
     getHost() {
@@ -66,6 +77,7 @@ export class RpiService {
     }
 
     setHost(value: string) {
+        this.init_done = false;
         return this.storage.set('rpi-alarm-clock', value);
     }
 
