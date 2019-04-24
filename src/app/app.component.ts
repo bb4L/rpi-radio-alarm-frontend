@@ -19,6 +19,11 @@ export class AppComponent {
       title: 'Alarms',
       url: '/alarms',
       icon: 'notifications-outline'
+    },
+    {
+      title: 'Settings',
+      url: '/settings',
+      icon: 'settings'
     }
   ];
 

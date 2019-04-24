@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Alarm, RpiService} from '../../services/rpi.service';
-import {isArrayLike} from 'rxjs/internal-compatibility';
 import {HttpErrorResponse} from '@angular/common/http';
+import {LoadingController} from '@ionic/angular';
 
 @Component({
     selector: 'app-alarms',
@@ -12,57 +12,38 @@ export class AlarmsPage implements OnInit {
     alarms: Alarm[] | undefined;
     error: string | undefined;
 
-    // constructor() {
-    constructor(private rpiService: RpiService) {
+    constructor(private rpiService: RpiService, private loadingController: LoadingController) {
     }
 
     ngOnInit() {
-        console.log('Test');
-        (async () => {
-            (await this.rpiService.getAlarms())
-                .subscribe((res) => {
-                    this.alarms = res as Array<Alarm>;
-                    console.log('res');
-                    console.log(res);
-                    console.log(this.alarms[0]);
-                    if (isArrayLike(res)) {
-                        console.log(res[0]);
-
-                    }
-
-
-                }, (err: HttpErrorResponse) => {
-
-                    console.log(err.message);
-                    this.error = err.message;
-                    console.log(this.error);
-                });
-            //     .map(this.handleData);
-        })();
+        this.getAlarms();
     }
 
+    async getAlarms() {
+        await this.presentLoading('Loading Alarms');
+        (await this.rpiService.getAlarms())
+            .subscribe((res) => {
+                this.alarms = res as Array<Alarm>;
+                console.log('alarms ready');
+                this.loadingController.dismiss();
+
+            }, (err: HttpErrorResponse) => {
+                this.error = err.message;
+            });
+    }
 
     changeAlarm(i: number) {
         (async () => {
             if (this.alarms) {
                 if (this.alarms[i]) {
+                    this.presentLoading('Sending Change');
                     (await this.rpiService.switchAlarm(i, !this.alarms[i].on))
                         .subscribe((res) => {
                             this.alarms = res as Array<Alarm>;
-                            console.log('res');
-                            console.log(res);
-                            console.log(this.alarms[0]);
-                            if (isArrayLike(res)) {
-                                console.log(res[0]);
-
-                            }
-
+                            this.loadingController.dismiss();
 
                         }, (err: HttpErrorResponse) => {
-
-                            console.log(err.message);
                             this.error = err.message;
-                            console.log(this.error);
                         });
                 }
             }
@@ -70,4 +51,19 @@ export class AlarmsPage implements OnInit {
 
     }
 
+    async presentLoading(message: string) {
+        const loading = await this.loadingController.create({
+            message: message,
+            duration: 8000
+        });
+        await loading.present();
+    }
+
+    doRefresh(event: any) {
+        (async () => {
+            event.target.complete();
+            await this.getAlarms();
+        })();
+
+    }
 }

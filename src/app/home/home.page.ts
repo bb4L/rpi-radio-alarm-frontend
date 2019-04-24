@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Storage} from '@ionic/storage';
+import {RpiService} from '../services/rpi.service';
 
 @Component({
   selector: 'app-home',
@@ -10,25 +11,20 @@ export class HomePage implements OnInit {
   host: string|undefined;
   hostinput: string;
 
-  constructor(private storage: Storage) {
+  constructor(private storage: Storage, private rpiService: RpiService) {
     this.host = '';
     this.hostinput = '';
   }
 
   ngOnInit() {
-    this.storage.get('rpi-alarm-clock').then((val: string) => {
+    this.getHost();
+
+  }
+
+  getHost() {
+    this.rpiService.getHost().then((val: string) => {
       this.hostinput = val;
       this.host = val;
     });
-  }
-
-  setHost() {
-    this.storage.set('rpi-alarm-clock', this.hostinput);
-    this.host = this.hostinput;
-  }
-
-  deleteStorage() {
-    this.storage.clear();
-    this.host = undefined;
   }
 }

@@ -3,12 +3,15 @@
         <ion-buttons slot="start">
             <ion-menu-button></ion-menu-button>
         </ion-buttons>
-        <ion-title>Alarms</ion-title>
+        <ion-title>Alarms
+        </ion-title>
     </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+    <ion-refresher (ionRefresh)="doRefresh($event)" slot="fixed">
+        <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
     <ion-card *ngFor="let alarm of alarms; index as i">
         <ion-card-header>
             <ion-card-title>
@@ -33,20 +36,4 @@
         </ion-card-content>
     </ion-card>
 
-
-    <ion-list *ngIf="alarms">
-        <ion-item *ngFor="let alarm of alarms">
-            <ion-label>
-                {{alarm.name}} {{alarm.hour}} : {{alarm.min}}; Days: {{alarm.days.join(' ,')}}
-            </ion-label>
-        </ion-item>
-    </ion-list>
-    <ion-card *ngIf="error">
-        <ion-card-header>
-            <ion-card-title color="danger">There was a error</ion-card-title>
-        </ion-card-header>
-        <ion-card-content>
-            {{error.valueOf()}}
-        </ion-card-content>
-    </ion-card>
 </ion-content>

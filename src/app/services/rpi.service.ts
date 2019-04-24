@@ -17,7 +17,6 @@ export interface Alarm {
 })
 export class RpiService {
     url = '';
-    obs: any;
     init_done = false;
 
 
@@ -61,4 +60,13 @@ export class RpiService {
             return this.http.post(this.url + 'alarm/turnoff', {'Alarm': i});
         }
     }
+
+    getHost() {
+        return this.storage.get('rpi-alarm-clock');
+    }
+
+    setHost(value: string) {
+        return this.storage.set('rpi-alarm-clock', value);
+    }
+
 }

@@ -1,0 +1,32 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-title>Settings</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+    <ion-card>
+        <ion-card-header>
+            <ion-card-title>Alarm Host</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+            <ion-item>
+                <ion-label *ngIf="host"> Actual host is {{host.valueOf()}}</ion-label>
+                <ion-label *ngIf="!host"> No host set</ion-label>
+            </ion-item>
+            <ion-item>
+                <ion-label position="stacked">New Host Variable:</ion-label>
+                <ion-input [(ngModel)]="hostinput" placeholder="host url of the rpi-alarm-clock"
+                           type="text"></ion-input>
+            </ion-item>
+
+            <ion-button (click)="setHost()" float-right>Set Host</ion-button>
+            <ion-button (click)="deleteStorage()" color="danger" float-left>Delete Storage</ion-button>
+        </ion-card-content>
+    </ion-card>
+
+</ion-content>
