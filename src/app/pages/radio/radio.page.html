@@ -1,0 +1,26 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-title>Radio
+        </ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-card>
+        <ion-card-header>
+            <ion-card-title>Actual Internet Radio</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+            <ion-button (click)="startRadio()" *ngIf="!isPlaying">
+                <ion-icon name="play" slot="icon-only"></ion-icon>
+            </ion-button>
+            <ion-button (click)="stopRadio()" *ngIf="isPlaying">
+                <ion-icon name="pause" slot="icon-only"></ion-icon>
+            </ion-button>
+        </ion-card-content>
+    </ion-card>
+
+</ion-content>
