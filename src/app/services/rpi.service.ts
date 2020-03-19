@@ -32,7 +32,7 @@ export class RpiService {
             this.router.navigateByUrl('/');
         } else {
 
-            this.url = 'http://' + value + ':8001/';
+            this.url = value;
             this.init_done = true;
         }
 
