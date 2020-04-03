@@ -73,13 +73,9 @@ export class RpiService {
     }
 
     async beforeApiCall() {
-        console.log('before api call');
-        console.log(((await this.getHost()) as HostData).host);
         if (!this.init_done && ((await this.getHost()) as HostData).host) {
-            console.log('get url will be called');
             await this.getUrl();
         } else {
-            console.log('hide_loading');
             await this.helper.hideLoading();
             await this.router.navigateByUrl('/');
         }
