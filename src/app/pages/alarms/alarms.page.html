@@ -9,11 +9,16 @@
 </ion-header>
 
 <ion-content>
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed" (click)="newAlarm()">
+        <ion-fab-button>
+            <ion-icon name="add"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
     <ion-refresher (ionRefresh)="doRefresh($event)" slot="fixed">
         <ion-refresher-content></ion-refresher-content>
     </ion-refresher>
     <ion-card *ngFor="let alarm of alarms; index as i">
-        <ion-card-header>
+        <ion-card-header (click)="showDetail(alarm)">
             <ion-card-title>
                 {{alarm.name}}
             </ion-card-title>
@@ -21,16 +26,25 @@
         <ion-card-content>
             <ion-grid>
                 <ion-row>
-                    <ion-col>
-                        <p align-self-start>Time: {{alarm.hour}}:{{alarm.min}}</p>
+                    <ion-col (click)="showDetail(alarm)">
+                        <p ion-align-self-start>Time: {{alarm.hour}}:{{alarm.min}}</p>
+                    </ion-col>
+                    <ion-col (click)="showDetail(alarm)">
+                        <p ion-align-self-center> Days: [{{alarm.days.join(',')}}] </p>
                     </ion-col>
                     <ion-col>
-                        <p align-self-center> Days: [{{alarm.days.join(',')}}] </p>
+<!--                        <div *ngIf="!loading">-->
+                            <ion-toggle ion-align-self-end *ngIf="alarm.on" (ionChange)="switchAlarm(alarm)" checked
+                                        color="success">
+                            </ion-toggle>
+                            <ion-toggle ion-align-self-end (ionChange)="switchAlarm(alarm)" *ngIf="!alarm.on"
+                                        color="success">
+                            </ion-toggle>
+<!--                        </div>-->
+<!--                        <ion-button *ngIf="alarm.on" color="danger" (click)="switchAlarm(alarm)">Turn off</ion-button>-->
+<!--                        <ion-button *ngIf="!alarm.on" color="success" (click)="switchAlarm(alarm)">Turn on</ion-button>-->
                     </ion-col>
                     <ion-col>
-                        <ion-toggle (ionChange)="changeAlarm($event, i)" [(ngModel)]="alarm.on" align-self-end
-                                    color="success">
-                        </ion-toggle>
                         <ion-button (click)="showDelete(i)" color="danger">
                             <ion-icon name="trash" slot="icon-only"></ion-icon>
                         </ion-button>

@@ -10,16 +10,35 @@
 </ion-header>
 
 <ion-content>
-    <ion-card class="welcome-card">
-      <ion-card-header>
-        <ion-card-subtitle>Raspberry Pi Radio Alarm</ion-card-subtitle>
-        <ion-card-title>Welcome to the Frontend</ion-card-title>
-      </ion-card-header>
-      <ion-card-content *ngIf="host">
-        <p>The actual Host is {{host.valueOf()}}</p>
-      </ion-card-content>
-      <ion-card-content *ngIf="!host">
-        <p>There is no Host set.</p>
-      </ion-card-content>
-    </ion-card>
+  <ion-card class="welcome-card">
+    <ion-card-header>
+      <ion-card-title>Welcome to the Frontend</ion-card-title>
+      <ion-card-subtitle>Raspberry Pi Radio Alarm</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content *ngIf="host">
+      <ion-item>
+        <ion-label>Host</ion-label>
+        {{hostData.host}}
+      </ion-item>
+      <ion-item>
+        <ion-label>Port</ion-label>
+        {{hostData.port}}
+      </ion-item>
+      <ion-item>
+        <ion-label>Header</ion-label>
+        {{hostData.customHeader}}
+      </ion-item>
+      <ion-item>
+        <ion-label>Key</ion-label>
+        {{hostData.customHeaderValue}}
+      </ion-item>
+      <ion-item>
+        <ion-label>Extrapath</ion-label>
+        {{hostData.extrapath}}
+      </ion-item>
+    </ion-card-content>
+    <ion-card-content *ngIf="!host">
+      <p>There is no Host set.</p>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

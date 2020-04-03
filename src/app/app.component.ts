@@ -1,13 +1,14 @@
-import { Component } from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
+import {IonRouterOutlet, Platform} from '@ionic/angular';
+import {SplashScreen} from '@ionic-native/splash-screen/ngx';
+import {StatusBar} from '@ionic-native/status-bar/ngx';
 
-import { Platform } from '@ionic/angular';
-import { SplashScreen } from '@ionic-native/splash-screen/ngx';
-import { StatusBar } from '@ionic-native/status-bar/ngx';
-
-@Component({
-  selector: 'app-root',
-  templateUrl: 'app.component.html'
-})
+@Component(
+    {
+      selector: 'app-root',
+      templateUrl: 'app.component.html'
+    }
+)
 export class AppComponent {
   public appPages = [
     {
@@ -15,11 +16,11 @@ export class AppComponent {
       url: '/home',
       icon: 'home'
     },
-      {
-          title: 'Radio',
-          url: '/radio',
-          icon: 'radio'
-      },
+    {
+      title: 'Radio',
+      url: '/radio',
+      icon: 'radio'
+    },
     {
       title: 'Alarms',
       url: '/alarms',
@@ -32,17 +33,18 @@ export class AppComponent {
     }
   ];
 
+  @ViewChild(IonRouterOutlet) routerOutlet: IonRouterOutlet | undefined;
   constructor(
-    private platform: Platform,
-    private splashScreen: SplashScreen,
-    private statusBar: StatusBar
+      private platform: Platform,
+      private splashScreen: SplashScreen,
+      private statusBar: StatusBar,
   ) {
     this.initializeApp();
   }
 
   initializeApp() {
     this.platform.ready().then(() => {
-      this.statusBar.styleDefault();
+      this.statusBar.styleLightContent();
       this.splashScreen.hide();
     });
   }

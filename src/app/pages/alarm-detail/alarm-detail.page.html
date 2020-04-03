@@ -1,0 +1,44 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button defaultHref="/alarms"></ion-back-button>
+        </ion-buttons>
+        <ion-title>alarm-detail</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <div *ngIf="alarm">
+        <ion-card>
+            <ion-item>
+                <ion-label>Name</ion-label>
+                <ion-input slot="end" [(ngModel)]="alarm.name" placeholder="host url of the rpi-alarm-clock"
+                           type="text"></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label>Hour</ion-label>
+                <ion-input slot="end" [(ngModel)]="alarm.hour" placeholder="port number of the rpi-alarm-clock"
+                           type="number"></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label>Minute</ion-label>
+                <ion-input slot="end" [(ngModel)]="alarm.min" placeholder="port number of the rpi-alarm-clock"
+                           type="number"></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label>Days (0 = monday)</ion-label>
+                <ion-input slot="end" [(ngModel)]="alarm.days" placeholder="port number of the rpi-alarm-clock"
+                           type="text"></ion-input>
+            </ion-item>
+
+            <ion-item>
+                <ion-label>On</ion-label>
+                <ion-checkbox slot="end" [(ngModel)]="alarm.on"
+                              placeholder="port number of the rpi-alarm-clock"></ion-checkbox>
+            </ion-item>
+            <ion-item>
+                <ion-button slot="end" color="success" (click)="saveAlarm()">Save Changes</ion-button>
+            </ion-item>
+        </ion-card>
+    </div>
+</ion-content>

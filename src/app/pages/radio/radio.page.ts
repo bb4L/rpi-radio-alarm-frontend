@@ -1,30 +1,30 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {Radio, RpiService} from '../../services/rpi.service';
+import {HelperService} from '../../services/helper/helper.service';
 
 @Component({
     selector: 'app-radio',
     templateUrl: './radio.page.html',
     styleUrls: ['./radio.page.scss'],
 })
-export class RadioPage implements OnInit {
+export class RadioPage {
 
     radio: any;
     isPlaying: boolean;
 
-    constructor(private rpiService: RpiService) {
+    constructor(private rpiService: RpiService, public helper: HelperService) {
         this.isPlaying = false;
     }
 
-    ngOnInit() {
+    async ionViewWillEnter() {
+        await this.helper.presentLoading('Loading Radio');
         (async () => {
             const res = await this.rpiService.getRadio();
-            res.subscribe((result) => {
-                console.log(result);
+            res.subscribe((result: any) => {
                 this.isPlaying = (result as Radio).isPlaying as boolean;
+                this.helper.hideLoading();
             });
         })();
-
-
     }
 
     async startRadio() {
