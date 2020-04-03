@@ -23,8 +23,6 @@ export class SettingsPage implements OnInit {
     getHost() {
         this.rpiService.getHost().then((val: string) => {
             const JSobj = JSON.parse(val) as HostData;
-            // this.host = val.host;
-            // this.port = val.port;
             if (JSobj) {
                 this.hostData = JSobj;
             }
@@ -39,9 +37,8 @@ export class SettingsPage implements OnInit {
 
     async deleteStorage() {
         await this.storage.clear();
-        // this.host = undefined;
-        this.hostData = {} as HostData;
-        this.hostData.host = 'default.host';
+        this.hostData = new HostData();
+        await this.saveData();
     }
 
     async readParseString() {

@@ -48,7 +48,6 @@ export class HelperService {
 
     async presentToast(msg: string) {
         try {
-
             const toast = await this.toastController.create({
                 message: msg,
                 duration: 2000

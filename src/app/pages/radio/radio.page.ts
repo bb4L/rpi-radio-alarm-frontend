@@ -10,21 +10,26 @@ import {HelperService} from '../../services/helper/helper.service';
 export class RadioPage {
 
     radio: any;
-    isPlaying: boolean;
+    isPlaying = false;
 
     constructor(private rpiService: RpiService, public helper: HelperService) {
-        this.isPlaying = false;
     }
 
-    async ionViewWillEnter() {
-        await this.helper.presentLoading('Loading Radio');
+    ionViewWillEnter() {
+        this.isPlaying = false;
         (async () => {
-            const res = await this.rpiService.getRadio();
-            res.subscribe((result: any) => {
-                this.isPlaying = (result as Radio).isPlaying as boolean;
-                this.helper.hideLoading();
-            });
+            this.getRadio();
         })();
+    }
+
+    async getRadio() {
+        await this.helper.presentLoading('Loading Radio');
+        (await this.rpiService.getRadio()).subscribe((result: any) => {
+            this.isPlaying = (result as Radio).isPlaying as boolean;
+            this.helper.hideLoading();
+        }, error => {
+            // pass
+        });
     }
 
     async startRadio() {

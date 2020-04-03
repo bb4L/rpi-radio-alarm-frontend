@@ -33,16 +33,12 @@
                         <p ion-align-self-center> Days: [{{alarm.days.join(',')}}] </p>
                     </ion-col>
                     <ion-col>
-<!--                        <div *ngIf="!loading">-->
                             <ion-toggle ion-align-self-end *ngIf="alarm.on" (ionChange)="switchAlarm(alarm)" checked
                                         color="success">
                             </ion-toggle>
                             <ion-toggle ion-align-self-end (ionChange)="switchAlarm(alarm)" *ngIf="!alarm.on"
                                         color="success">
                             </ion-toggle>
-<!--                        </div>-->
-<!--                        <ion-button *ngIf="alarm.on" color="danger" (click)="switchAlarm(alarm)">Turn off</ion-button>-->
-<!--                        <ion-button *ngIf="!alarm.on" color="success" (click)="switchAlarm(alarm)">Turn on</ion-button>-->
                     </ion-col>
                     <ion-col>
                         <ion-button (click)="showDelete(i)" color="danger">
@@ -53,5 +49,4 @@
             </ion-grid>
         </ion-card-content>
     </ion-card>
-
 </ion-content>

@@ -28,7 +28,7 @@ export class AlarmsPage {
         this.loading = true;
         await this.helper.presentLoading('Loading Alarms');
         (await this.rpiService.getAlarms())
-            .subscribe((res) => {
+            .subscribe((res: any) => {
                 this.alarms = res as Array<Alarm>;
                 this.alarms.forEach((alarm, index) => {
                     alarm.idx = index;

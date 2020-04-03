@@ -2,6 +2,7 @@ import {Storage} from '@ionic/storage';
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Router} from '@angular/router';
+import {HelperService} from './helper/helper.service';
 
 
 export interface Alarm {
@@ -27,7 +28,7 @@ export class HostData {
 
     constructor() {
         this.https = false;
-        this.host = 'alsp.local';
+        this.host = '';
         this.port = 80;
         this.customHeader = '';
         this.customHeaderValue = '';
@@ -48,26 +49,21 @@ export class RpiService {
     cust_header_val = '';
     private _headers = new HttpHeaders();
 
-    constructor(private http: HttpClient, private storage: Storage, private router: Router) {
+    constructor(private http: HttpClient, private storage: Storage, private router: Router, public helper: HelperService,) {
     }
 
     handleStorageValue(value: HostData) {
-        if (value == null) {
-            this.router.navigateByUrl('/');
-        } else {
-            this.url = 'https://' + value.host +':'+ value.port;
-            if (value.extrapath.length > 0){
-                this.url = 'https://' + value.host + ':' + value.port + '/' + value.extrapath + '/';
-            }
-            if(value.customHeader.length > 1 && value.customHeaderValue.length > 1) {
-                this.custom_header = true;
-                this.custom_header_val = this._headers.set(value.customHeader, value.customHeaderValue);
-                this.cust_header_key = value.customHeader as string;
-                this.cust_header_val = value.customHeaderValue as string;
-            }
-            this.init_done = true;
+        this.url = 'https://' + value.host + ':' + value.port;
+        if (value.extrapath.length > 0) {
+            this.url = 'https://' + value.host + ':' + value.port + '/' + value.extrapath + '/';
         }
-
+        if (value.customHeader.length > 1 && value.customHeaderValue.length > 1) {
+            this.custom_header = true;
+            this.custom_header_val = this._headers.set(value.customHeader, value.customHeaderValue);
+            this.cust_header_key = value.customHeader as string;
+            this.cust_header_val = value.customHeaderValue as string;
+        }
+        this.init_done = true;
     }
 
     async getUrl() {
@@ -77,14 +73,21 @@ export class RpiService {
     }
 
     async beforeApiCall() {
-        if (!this.init_done) {
+        console.log('before api call');
+        console.log(((await this.getHost()) as HostData).host);
+        if (!this.init_done && ((await this.getHost()) as HostData).host) {
+            console.log('get url will be called');
             await this.getUrl();
+        } else {
+            console.log('hide_loading');
+            await this.helper.hideLoading();
+            await this.router.navigateByUrl('/');
         }
     }
 
     async getAlarms() {
         await this.beforeApiCall();
-        return this.http.get<Alarm[]>(this.url + 'alarm',  {headers : this.custom_header_val });
+        return this.http.get<Alarm[]>(this.url + 'alarm', {headers: this.custom_header_val});
     }
 
     async switchAlarm(i: number, turnOff: boolean) {
@@ -115,18 +118,18 @@ export class RpiService {
 
     async startRadio() {
         await this.beforeApiCall();
-        return this.http.post(this.url + 'radio', {'switch': 'on'},{ headers : this.custom_header_val });
+        return this.http.post(this.url + 'radio', {'switch': 'on'}, {headers: this.custom_header_val});
     }
 
     async stopRadio() {
         await this.beforeApiCall();
-        return this.http.post(this.url + 'radio', {'switch': 'off'},{ headers : this.custom_header_val });
+        return this.http.post(this.url + 'radio', {'switch': 'off'}, {headers: this.custom_header_val});
     }
 
     async createAlarm(alarm: any) {
         await this.beforeApiCall();
         const url = this.url + 'alarm';
-        return this.http.post(url, alarm,{ headers : this.custom_header_val });
+        return this.http.post(url, alarm, {headers: this.custom_header_val});
     }
 
     getHost() {
