@@ -73,10 +73,15 @@ export class RpiService {
     }
 
     async beforeApiCall() {
-        if (!this.init_done && ((await this.getHost()) as HostData).host) {
+        const host_data = JSON.parse(await this.getHost());
+        if (host_data && host_data.host !== '') {
             await this.getUrl();
         } else {
-            await this.helper.hideLoading();
+            try {
+                await this.helper.hideLoading();
+            } catch (e) {
+                // pass
+            }
             await this.router.navigateByUrl('/');
         }
     }

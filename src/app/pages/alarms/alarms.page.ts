@@ -18,7 +18,7 @@ export class AlarmsPage {
     }
 
     ionViewWillEnter() {
-        this.loading = true;
+        this.alarms = [];
         (async () => {
             this.getAlarms();
         })();

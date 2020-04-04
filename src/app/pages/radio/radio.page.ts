@@ -11,11 +11,13 @@ export class RadioPage {
 
     radio: any;
     isPlaying = false;
+    isLoading = true;
 
     constructor(private rpiService: RpiService, public helper: HelperService) {
     }
 
     ionViewWillEnter() {
+        this.isLoading = true;
         this.isPlaying = false;
         (async () => {
             this.getRadio();
@@ -26,6 +28,7 @@ export class RadioPage {
         await this.helper.presentLoading('Loading Radio');
         (await this.rpiService.getRadio()).subscribe((result: any) => {
             this.isPlaying = (result as Radio).isPlaying as boolean;
+            this.isLoading = false;
             this.helper.hideLoading();
         }, error => {
             // pass
@@ -42,5 +45,17 @@ export class RadioPage {
         (await this.rpiService.stopRadio()).subscribe(() => {
             this.isPlaying = false;
         });
+    }
+
+    doRefresh(event: any) {
+        (async () => {
+            if (event) {
+                try {
+                    event.target.complete();
+                } catch (e) {
+                }
+            }
+            await this.getRadio();
+        })();
     }
 }

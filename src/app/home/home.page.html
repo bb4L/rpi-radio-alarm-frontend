@@ -15,7 +15,7 @@
       <ion-card-title>Welcome to the Frontend</ion-card-title>
       <ion-card-subtitle>Raspberry Pi Radio Alarm</ion-card-subtitle>
     </ion-card-header>
-    <ion-card-content *ngIf="host">
+    <ion-card-content *ngIf="hostData && hostData.host!==''">
       <ion-item>
         <ion-label>Host</ion-label>
         {{hostData.host}}
@@ -37,7 +37,7 @@
         {{hostData.extrapath}}
       </ion-item>
     </ion-card-content>
-    <ion-card-content *ngIf="!host">
+    <ion-card-content *ngIf="!(hostData && hostData.host!=='')">
       <p>There is no Host set.</p>
     </ion-card-content>
   </ion-card>
