@@ -32,6 +32,7 @@
     "rxjs": "~6.5.5",
     "zone.js": "~0.10.3",
     "tslib": "^1.11.1"
+    "cordova-browser": "6.0.0",
   },
   "devDependencies": {
     "@angular-devkit/architect": "~0.901.0",
@@ -80,7 +81,8 @@
       "cordova-plugin-ionic-keyboard": {}
     },
     "platforms": [
-      "android"
+      "android",
+      "browser"
     ]
   }
 }
