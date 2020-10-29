@@ -9,11 +9,14 @@
 </ion-header>
 
 <ion-content>
+    <ion-refresher (ionRefresh)="doRefresh($event)" slot="fixed">
+        <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
     <ion-card>
         <ion-card-header>
             <ion-card-title>Actual Internet Radio</ion-card-title>
         </ion-card-header>
-        <ion-card-content>
+        <ion-card-content *ngIf="!this.isLoading">
             <ion-button (click)="startRadio()" *ngIf="!isPlaying">
                 <ion-icon name="play" slot="icon-only"></ion-icon>
             </ion-button>
@@ -22,5 +25,4 @@
             </ion-button>
         </ion-card-content>
     </ion-card>
-
 </ion-content>

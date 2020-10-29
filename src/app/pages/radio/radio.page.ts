@@ -1,30 +1,38 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {Radio, RpiService} from '../../services/rpi.service';
+import {HelperService} from '../../services/helper/helper.service';
 
 @Component({
     selector: 'app-radio',
     templateUrl: './radio.page.html',
     styleUrls: ['./radio.page.scss'],
 })
-export class RadioPage implements OnInit {
+export class RadioPage {
 
     radio: any;
-    isPlaying: boolean;
+    isPlaying = false;
+    isLoading = true;
 
-    constructor(private rpiService: RpiService) {
-        this.isPlaying = false;
+    constructor(private rpiService: RpiService, public helper: HelperService) {
     }
 
-    ngOnInit() {
+    ionViewWillEnter() {
+        this.isLoading = true;
+        this.isPlaying = false;
         (async () => {
-            const res = await this.rpiService.getRadio();
-            res.subscribe((result) => {
-                console.log(result);
-                this.isPlaying = (result as Radio).isPlaying as boolean;
-            });
+            this.getRadio();
         })();
+    }
 
-
+    async getRadio() {
+        await this.helper.presentLoading('Loading Radio');
+        (await this.rpiService.getRadio()).subscribe((result: any) => {
+            this.isPlaying = (result as Radio).isPlaying as boolean;
+            this.isLoading = false;
+            this.helper.hideLoading();
+        }, error => {
+            // pass
+        });
     }
 
     async startRadio() {
@@ -37,5 +45,17 @@ export class RadioPage implements OnInit {
         (await this.rpiService.stopRadio()).subscribe(() => {
             this.isPlaying = false;
         });
+    }
+
+    doRefresh(event: any) {
+        (async () => {
+            if (event) {
+                try {
+                    event.target.complete();
+                } catch (e) {
+                }
+            }
+            await this.getRadio();
+        })();
     }
 }

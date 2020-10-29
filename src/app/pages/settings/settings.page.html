@@ -8,25 +8,53 @@
 </ion-header>
 
 <ion-content>
-
     <ion-card>
         <ion-card-header>
             <ion-card-title>Alarm Host</ion-card-title>
         </ion-card-header>
         <ion-card-content>
             <ion-item>
-                <ion-label *ngIf="host"> Actual host is {{host.valueOf()}}</ion-label>
-                <ion-label *ngIf="!host"> No host set</ion-label>
+                <ion-label>Host</ion-label>
+                <ion-input [(ngModel)]="hostData.host" placeholder="host url of the rpi-alarm-clock"
+                           type="text" slot="end"></ion-input>
             </ion-item>
             <ion-item>
-                <ion-label position="stacked">New Host Variable:</ion-label>
-                <ion-input [(ngModel)]="hostinput" placeholder="host url of the rpi-alarm-clock"
-                           type="text"></ion-input>
+                <ion-label>Port</ion-label>
+                <ion-input [(ngModel)]="hostData.port" placeholder="port number of the rpi-alarm-clock"
+                           type="number" slot="end"></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label>Extraheader</ion-label>
+                <ion-input [(ngModel)]="hostData.customHeader" placeholder="extra header name"
+                           type="text" slot="end"></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label>Apikey</ion-label>
+                <ion-input [(ngModel)]="hostData.customHeaderValue" placeholder="apikey"
+                           type="text" slot="end"></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label>Extrapath</ion-label>
+                <ion-input [(ngModel)]="hostData.extrapath" placeholder="extrapath"
+                           type="text" slot="end"></ion-input>
             </ion-item>
 
-            <ion-button (click)="setHost()" float-right>Set Host</ion-button>
-            <ion-button (click)="deleteStorage()" color="danger" float-left>Delete Storage</ion-button>
+            <ion-item>
+                <ion-label>Inputstring:</ion-label>
+                <ion-input [(ngModel)]="parsestring" type="text"></ion-input>
+            </ion-item>
+
+            <ion-row>
+                <ion-col>
+                    <ion-button (click)="readParseString()">Load from string</ion-button>
+                </ion-col>
+                <ion-col>
+                    <ion-button (click)="deleteStorage()" color="danger">Delete Storage</ion-button>
+                </ion-col>
+                <ion-col>
+                    <ion-button (click)="saveData()" color="success">Save Data</ion-button>
+                </ion-col>
+            </ion-row>
         </ion-card-content>
     </ion-card>
-
 </ion-content>

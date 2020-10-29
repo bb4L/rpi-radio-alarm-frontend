@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Storage} from '@ionic/storage';
-import {RpiService} from '../../services/rpi.service';
+import {RpiService, HostData} from '../../services/rpi.service';
 
 @Component({
     selector: 'app-settings',
@@ -9,12 +9,11 @@ import {RpiService} from '../../services/rpi.service';
 })
 export class SettingsPage implements OnInit {
 
-    host: string | undefined;
-    hostinput: string;
+    hostData: HostData;
+    parsestring = '';
 
     constructor(private storage: Storage, private rpiService: RpiService) {
-        this.host = '';
-        this.hostinput = '';
+        this.hostData = new HostData();
     }
 
     ngOnInit() {
@@ -23,19 +22,33 @@ export class SettingsPage implements OnInit {
 
     getHost() {
         this.rpiService.getHost().then((val: string) => {
-            this.host = val;
+            const JSobj = JSON.parse(val) as HostData;
+            if (JSobj) {
+                this.hostData = JSobj;
+            }
         });
     }
 
-    async setHost() {
-        this.rpiService.setHost(this.hostinput).then(value => {
-            this.host = value;
+    async saveData() {
+        this.rpiService.setHost(this.hostData).then(value => {
+            this.hostData = JSON.parse(value);
         });
     }
 
     async deleteStorage() {
         await this.storage.clear();
-        this.host = undefined;
+        this.hostData = new HostData();
+        await this.saveData();
+    }
+
+    async readParseString() {
+        const values = this.parsestring.split(',');
+        this.hostData.host = values[0];
+        this.hostData.port = parseInt(values[1], 10);
+        this.hostData.customHeader = values[2];
+        this.hostData.customHeaderValue = values[3];
+        this.hostData.extrapath = values[4];
+        await this.saveData();
     }
 
 }
