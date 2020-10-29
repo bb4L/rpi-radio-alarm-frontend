@@ -14,10 +14,16 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
-      - name: Build debug APK
-        run: bash ./gradlew assembleDebug --stacktrace
+      - name: npm i
+        run: npm i
+      - name: remove platform
+        run: ionic cordova platform rm android
+      - name: add platform
+        run: ionic cordova platform add android
+      - name: build android
+        run: ionic cordova build android
       - name: Upload APK
         uses: actions/upload-artifact@v1
         with:
           name: app
-          path: app/build/outputs/apk/debug/app-debug.apk
+          path: platforms/android/build/outputs/apk
