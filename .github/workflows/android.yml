@@ -18,11 +18,15 @@ jobs:
         uses: actions/setup-node@v1
         with:
             node-version: 13.x
+      - name: Install Cordova
+        run: npm install -g cordova
+      - name: Install Ionic
+        run: npm install -g @ionic/cli
+      - name: Install app dependencies
+        run: npm install
       - name: npm i
         run: npm i
-      - name: remove platform
-        run: ionic cordova platform rm android
-      - name: add platform
+      - name: Add Android Platform
         run: ionic cordova platform add android
       - name: build android
         run: ionic cordova build android
@@ -30,4 +34,4 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: app
-          path: platforms/android/build/outputs/apk
+          path: platforms/android/app/build/outputs/apk/debug/app-debug.apk
